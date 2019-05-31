@@ -11,7 +11,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget _buildListItem(HackerNews hackerNews) {
       return Padding(
-        key: Key(hackerNews.title),
         padding: EdgeInsets.all(16.0),
         child: ExpansionTile(
           title: Text(
@@ -22,7 +21,7 @@ class HomeScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text("${hackerNews.type}"),
+                Text("${hackerNews.descendants != null ? hackerNews.descendants : 0} Comments"),
                 IconButton(
                   icon: Icon(Icons.launch),
                   onPressed: () async {

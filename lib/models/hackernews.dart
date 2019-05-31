@@ -32,7 +32,7 @@ abstract class HackerNews implements Built<HackerNews , HackerNewsBuilder> {
   String get title ;
   BuiltList<int> get parts ;
   @nullable
-  int get decendants ;
+  int get descendants ;
 
   HackerNews._();
 

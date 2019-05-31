@@ -1,5 +1,5 @@
+import 'dart:collection';
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:hacker_news_app/models/hackernews.dart';
@@ -7,6 +7,7 @@ import 'package:hacker_news_app/models/hackernews.dart';
 class HomeScreenState with ChangeNotifier {
   static List<dynamic> _topStoryIds = [];
   static List<dynamic> _newStoryIds = [];
+  var _cachedArticles = HashMap<int , HackerNews>();
 
   final String baseUrl = "https://hacker-news.firebaseio.com/v0/";
 
@@ -84,7 +85,7 @@ class HomeScreenState with ChangeNotifier {
            : _topArticles.add(newArticle);
        //todo : create a separate notifier for both new storis and top stories
        if (storyIds.indexOf(id) > 5) notifyListeners();
-       if (storyIds.indexOf(id) > 20) break;
+       if (storyIds.indexOf(id) > 10) break;
      }
      type == ArticleType.NewStories
          ? _isNewStoriesLoading = false
@@ -94,12 +95,16 @@ class HomeScreenState with ChangeNotifier {
   }
 
   Future<HackerNews> _getArticle(var id) async {
-    final url = "${baseUrl}item/$id.json";
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      return parseHackerNews(response.body);
+    if (!_cachedArticles.containsKey(id)) {
+      final url = "${baseUrl}item/$id.json";
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        _cachedArticles[id] = parseHackerNews(response.body);
+      } else {
+        throw HackerNewsApiError("Article $id Couldn't Be Fetched");
+      }
+      return _cachedArticles[id];
     }
-    throw HackerNewsApiError("Article $id Couldn't Be Fetched");
   }
 }
 

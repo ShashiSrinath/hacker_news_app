@@ -91,10 +91,10 @@ class _$HackerNewsSerializer implements StructuredSerializer<HackerNews> {
         ..add(serializers.serialize(object.title,
             specifiedType: const FullType(String)));
     }
-    if (object.decendants != null) {
+    if (object.descendants != null) {
       result
-        ..add('decendants')
-        ..add(serializers.serialize(object.decendants,
+        ..add('descendants')
+        ..add(serializers.serialize(object.descendants,
             specifiedType: const FullType(int)));
     }
 
@@ -172,8 +172,8 @@ class _$HackerNewsSerializer implements StructuredSerializer<HackerNews> {
                       const FullType(BuiltList, const [const FullType(int)]))
               as BuiltList);
           break;
-        case 'decendants':
-          result.decendants = serializers.deserialize(value,
+        case 'descendants':
+          result.descendants = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
       }
@@ -213,7 +213,7 @@ class _$HackerNews extends HackerNews {
   @override
   final BuiltList<int> parts;
   @override
-  final int decendants;
+  final int descendants;
 
   factory _$HackerNews([void Function(HackerNewsBuilder) updates]) =>
       (new HackerNewsBuilder()..update(updates)).build();
@@ -233,7 +233,7 @@ class _$HackerNews extends HackerNews {
       this.score,
       this.title,
       this.parts,
-      this.decendants})
+      this.descendants})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('HackerNews', 'id');
@@ -274,7 +274,7 @@ class _$HackerNews extends HackerNews {
         score == other.score &&
         title == other.title &&
         parts == other.parts &&
-        decendants == other.decendants;
+        descendants == other.descendants;
   }
 
   @override
@@ -306,7 +306,7 @@ class _$HackerNews extends HackerNews {
                     score.hashCode),
                 title.hashCode),
             parts.hashCode),
-        decendants.hashCode));
+        descendants.hashCode));
   }
 
   @override
@@ -326,7 +326,7 @@ class _$HackerNews extends HackerNews {
           ..add('score', score)
           ..add('title', title)
           ..add('parts', parts)
-          ..add('decendants', decendants))
+          ..add('descendants', descendants))
         .toString();
   }
 }
@@ -390,9 +390,9 @@ class HackerNewsBuilder implements Builder<HackerNews, HackerNewsBuilder> {
   ListBuilder<int> get parts => _$this._parts ??= new ListBuilder<int>();
   set parts(ListBuilder<int> parts) => _$this._parts = parts;
 
-  int _decendants;
-  int get decendants => _$this._decendants;
-  set decendants(int decendants) => _$this._decendants = decendants;
+  int _descendants;
+  int get descendants => _$this._descendants;
+  set descendants(int descendants) => _$this._descendants = descendants;
 
   HackerNewsBuilder();
 
@@ -412,7 +412,7 @@ class HackerNewsBuilder implements Builder<HackerNews, HackerNewsBuilder> {
       _score = _$v.score;
       _title = _$v.title;
       _parts = _$v.parts?.toBuilder();
-      _decendants = _$v.decendants;
+      _descendants = _$v.descendants;
       _$v = null;
     }
     return this;
@@ -451,7 +451,7 @@ class HackerNewsBuilder implements Builder<HackerNews, HackerNewsBuilder> {
               score: score,
               title: title,
               parts: parts.build(),
-              decendants: decendants);
+              descendants: descendants);
     } catch (_) {
       String _$failedField;
       try {
