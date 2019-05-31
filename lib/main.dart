@@ -11,7 +11,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         builder: (context) => HomeScreenState(),
-        child: HomeScreen());
+        child: MaterialApp(
+          theme: ThemeData(
+              primaryColor: Colors.white,
+              accentColor: Color(0xff6b38fb),
+              fontFamily: 'Martel'
+          ),
+          home: HomeScreen(),
+        ) );
   }
 }
 

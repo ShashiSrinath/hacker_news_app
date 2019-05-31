@@ -7,7 +7,7 @@ import 'package:hacker_news_app/models/hackernews.dart';
 class HomeScreenState with ChangeNotifier {
   static List<dynamic> _topStoryIds = [];
   static List<dynamic> _newStoryIds = [];
-  var _cachedArticles = HashMap<int , HackerNews>();
+  var _cachedArticles = HashMap<int, HackerNews>();
 
   final String baseUrl = "https://hacker-news.firebaseio.com/v0/";
 
@@ -26,8 +26,9 @@ class HomeScreenState with ChangeNotifier {
     String partUrl = type == ArticleType.NewStories ? "new" : "top";
     String url = "$baseUrl${partUrl}stories.json";
     final response = await http.get(url);
-    if (response.statusCode != 200)
+    if (response.statusCode != 200) {
       throw HackerNewsApiError("Story type $type Couldn't be fetched");
+    }
     return jsonDecode(response.body);
   }
 
@@ -44,6 +45,13 @@ class HomeScreenState with ChangeNotifier {
   }
 
   int get bottomNavigationBarIndex => _bottomNavigationBarIndex;
+
+  List<HackerNews> get allArticles  {
+    List<HackerNews> _allArticles = new List<HackerNews>();
+    _allArticles.addAll(_newArticles);
+    _allArticles.addAll(_topArticles);
+    return _allArticles ;
+  }
 
   void changeArticleType(int index) {
     if (index == 0) {
@@ -72,26 +80,26 @@ class HomeScreenState with ChangeNotifier {
         (type == ArticleType.TopStories && _topArticles.isEmpty))
       needToFetch = true;
 
-   if (needToFetch) {
-     var storyIds = await initializeArticles(type);
-     type == ArticleType.NewStories
-         ? _newStoryIds = storyIds
-         : _topStoryIds = storyIds;
+    if (needToFetch) {
+      var storyIds = await initializeArticles(type);
+      type == ArticleType.NewStories
+          ? _newStoryIds = storyIds
+          : _topStoryIds = storyIds;
 
-     for (int id in storyIds) {
-       HackerNews newArticle = await _getArticle(id);
-       type == ArticleType.NewStories
-           ? _newArticles.add(newArticle)
-           : _topArticles.add(newArticle);
-       //todo : create a separate notifier for both new storis and top stories
-       if (storyIds.indexOf(id) > 5) notifyListeners();
-       if (storyIds.indexOf(id) > 10) break;
-     }
-     type == ArticleType.NewStories
-         ? _isNewStoriesLoading = false
-         : _isTopStoriesLoading = false;
-     notifyListeners();
-   }
+      for (int id in storyIds) {
+        HackerNews newArticle = await _getArticle(id);
+        type == ArticleType.NewStories
+            ? _newArticles.add(newArticle)
+            : _topArticles.add(newArticle);
+        //todo : create a separate notifier for both new storis and top stories
+        if (storyIds.indexOf(id) > 5) notifyListeners();
+        if (storyIds.indexOf(id) > 10) break;
+      }
+      type == ArticleType.NewStories
+          ? _isNewStoriesLoading = false
+          : _isTopStoriesLoading = false;
+      notifyListeners();
+    }
   }
 
   Future<HackerNews> _getArticle(var id) async {
@@ -103,8 +111,8 @@ class HomeScreenState with ChangeNotifier {
       } else {
         throw HackerNewsApiError("Article $id Couldn't Be Fetched");
       }
-      return _cachedArticles[id];
     }
+    return _cachedArticles[id];
   }
 }
 
