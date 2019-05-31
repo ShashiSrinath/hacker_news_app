@@ -11,7 +11,6 @@ class HomeScreenState with ChangeNotifier {
   final String baseUrl = "https://hacker-news.firebaseio.com/v0/";
 
   bool _isNewStoriesLoading = true;
-
   bool _isTopStoriesLoading = true;
 
   ArticleType articleType = ArticleType.NewStories;
