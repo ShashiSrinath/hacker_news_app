@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:hacker_news_app/homepage_state.dart';
 import 'package:hacker_news_app/models/hackernews.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -53,7 +54,7 @@ class HomeScreen extends StatelessWidget {
                 ? Padding(
                     padding: EdgeInsets.all(10),
                     child: CircularProgressIndicator())
-                : Container(),
+                : Padding(padding: EdgeInsets.symmetric(horizontal: 10),child: LoadingIcon() ),
           ),
           body: Consumer<HomeScreenState>(
             builder: (context, state, _) {
@@ -99,9 +100,9 @@ class _LoadingIconState extends State<LoadingIcon>
 
   @override
   Widget build(BuildContext context) {
-    _controller.forward().then((f) => _controller.reverse());
+    _controller.forward();
     return FadeTransition(
-      child: Icon(FontAwesomeIcons.hackerNews),
+      child: Icon(FontAwesomeIcons.hackerNews , size: 40,),
       opacity: _controller,
     );
   }
